@@ -9,23 +9,28 @@ class camThread(threading.Thread):
     threading.Thread.__init__(self)
     self.previewName = previewName
     self.camID = camID
+    self.is_active = True
+    self.frame = None
+
   def run(self):
     print("Starting " + self.previewName)
-    camPreview(self.previewName, self.camID)
+    self.camPreview(self.previewName, self.camID)
 
-def camPreview(previewName, camID):
-  cv2.namedWindow(previewName)
-  cam = cv2.VideoCapture(camID)
-  if cam.isOpened():
-    rval, frame = cam.read()
-  else:
-    rval = False
+  def camPreview(self, previewName, camID):
+    #cv2.namedWindow(previewName)
+    cam = cv2.VideoCapture(camID)
+    if cam.isOpened():
+      rval, frame = cam.read()
+    else:
+      self.is_active = False
+      rval = False
 
-  while rval:
-    frame = qr.detectQrCode(frame)
-    cv2.imshow(previewName, frame)
-    rval, frame = cam.read()
-    key = cv2.waitKey(25)
-    if key & 0xFF == ord("q"):  # exit on ESC
-        break
-  cv2.destroyWindow(previewName)
+    while self.is_active:
+      frame = qr.detectQrCode(frame)
+      #cv2.imshow(previewName, frame)
+      self.frame = frame
+      rval, frame = cam.read()
+    
+    print("End cam preview")
+      
+    #cv2.destroyWindow(previewName)
