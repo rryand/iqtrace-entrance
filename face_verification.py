@@ -58,13 +58,3 @@ def _displayFaceComparison(result, unknown_image, known_image):
   cv2.imshow("Face Recognition", vis)
   cv2.waitKey(0)
   cv2.destroyAllWindows()
-
-# print(FaceRecognitionService().compareFaces("reid.jpg", "test.jpg"))
-
-known_image = cv2.imread("test.jpg")
-unknown_image = cv2.imread("test2.jpg")
-
-known_encoding = face_recognition.face_encodings(known_image)[0]
-unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-print(type(known_encoding))
-print(face_recognition.face_distance([known_encoding], unknown_encoding))

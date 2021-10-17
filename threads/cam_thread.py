@@ -47,13 +47,9 @@ class CameraThread(threading.Thread):
       rval, frame = cam.read()
       (frame, data) = qr.detectQrCode(frame)
       self.qr_data = json.loads(data) if data is not None and is_json(data) else data
-      print(type(self.qr_data))
-      #cv2.imshow(previewName, frame)
       self.frame = frame
     
     print("Stopping camera")
-      
-    #cv2.destroyWindow(previewName)
   
   def has_valid_qr_data(self):
     return False if self.qr_data is None else True
@@ -62,3 +58,14 @@ class CameraThread(threading.Thread):
     data = self.qr_data
     self.qr_data = None
     return data
+  
+  def write_data_to_frame(self, data: dict):
+    data.pop('face_encoding')
+    i = 0
+    y0, dy = 50, 20
+    for key, value in data.items():
+      print(key, value)
+      i += 1
+      y = y0 + i*dy
+      cv2.putText(self.frame, f"{key}: {value}", (50, y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+

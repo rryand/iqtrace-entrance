@@ -34,8 +34,8 @@ def main() -> None:
       if (type(qr_data) == dict):
         user_data = api.get(f"/users?email={qr_data['email']}")
         face_encoding = user_data['face_encoding']
+        qr_thread.write_data_to_frame(user_data)
 
-      # Facial recog
       screen_thread = get_screen_thread()
       screen_thread.start()
     
