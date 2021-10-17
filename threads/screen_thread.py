@@ -6,22 +6,27 @@ import numpy
 
 import threads.processors.face_recog as face_recog
 
-class screenThread(threading.Thread):
+class ScreenThread(threading.Thread):
   def __init__(self, previewName):
     threading.Thread.__init__(self)
     self.previewName = previewName
-    self.is_active = True
     self.frame = None
+  
+  def terminate(self):
+    print("Terminating ", self.previewName)
+    self._is_running = False
 
   def run(self):
     print("Starting " + self.previewName)
-    self.screenRun(self.previewName)
+    self._is_running = True
+    self.run_screen(self.previewName)
 
-  def screenRun(self, name):
+  def run_screen(self, name):
     with mss.mss() as sct:
       monitor = {"top": 40, "left": 0, "width": 600, "height": 360}
 
-      while self.is_active:
+      while self._is_running:
+        #print("running screen")
         #last_time = time.time()
 
         # Get raw pixels from the screen, save it to a Numpy array
@@ -37,5 +42,5 @@ class screenThread(threading.Thread):
 
         #print("fps: {}".format(1 / (time.time() - last_time)))
       
-      print("End screen read")
+      print("Stopping screen read")
 

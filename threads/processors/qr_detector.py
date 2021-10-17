@@ -2,7 +2,8 @@ import cv2
 
 qr_detector = cv2.QRCodeDetector()
 
-def detectQrCode(frame):
+# TODO: Optimize
+def detectQrCode(frame) -> tuple:
   data, bbox, qr_image = qr_detector.detectAndDecode(frame)
 
   if(len(data) > 0):
@@ -15,5 +16,7 @@ def detectQrCode(frame):
       (0, 255, 0), 
       2
     )
+    print(data)
+    return (frame, data)
   
-  return frame
+  return (frame, None)
