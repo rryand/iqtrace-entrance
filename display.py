@@ -19,9 +19,9 @@ def display(qr_frame, screen_frame):
   #print("displaying...")
 
 def _build_frame(frame1, frame2):
-  h1, w1 = frame1.shape[:2]
-  h2, w2 = frame2.shape[:2]
+  h1, w1, c1 = frame1.shape[:3]
+  h2, w2, c2 = frame2.shape[:3]
   vis = np.zeros((h1 + h2, max(w1, w2), 4), np.uint8)
-  vis[:h1, :w1, :3] = frame1
-  vis[h1:h1+h2, :w2, :4] = frame2
+  vis[:h1, :w1, :c1] = frame1
+  vis[h1:h1+h2, :w2, :c2] = frame2
   return vis

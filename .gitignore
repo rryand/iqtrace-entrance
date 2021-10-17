@@ -1,5 +1,7 @@
 .env
 
+*.jpg
+
 images/
 run-pixymon.sh
 

@@ -11,6 +11,7 @@ class ScreenThread(threading.Thread):
     threading.Thread.__init__(self)
     self.previewName = previewName
     self.frame = None
+    self.face_frame = None
   
   def terminate(self):
     print("Terminating ", self.previewName)
@@ -22,6 +23,7 @@ class ScreenThread(threading.Thread):
     self.run_screen(self.previewName)
 
   def run_screen(self, name):
+    process_frame = True
     with mss.mss() as sct:
       monitor = {"top": 40, "left": 0, "width": 600, "height": 360}
 
@@ -33,7 +35,11 @@ class ScreenThread(threading.Thread):
         img = numpy.array(sct.grab(monitor))
 
         # Get faces from screen
-        frame = face_recog.detectFaceFromStream(img)
+        if process_frame:
+          (frame, face_frame) = face_recog.detectFaceFromStream(img)
+        process_frame = not process_frame
+
+        self.face_frame = face_frame
 
         # Display the picture
         #cv2.imshow(name, frame)
@@ -43,4 +49,12 @@ class ScreenThread(threading.Thread):
         #print("fps: {}".format(1 / (time.time() - last_time)))
       
       print("Stopping screen read")
+    
+  def has_face_frame(self):
+    return True if self.face_frame is not None else False
+  
+  def pop_face_frame(self):
+    face_frame = self.face_frame
+    self.face_frame = None
+    return face_frame
 
