@@ -58,3 +58,6 @@ class ScreenThread(threading.Thread):
     self.face_frame = None
     return face_frame
 
+  def write_temp(self, temp):
+    y = 50
+    cv2.putText(self.frame, f"Temp: {temp}", (50, y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)

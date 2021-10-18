@@ -7,7 +7,7 @@ _offset = 7.0
 interval = 0.5
 loops = 6
 
-def getTemperature() -> float:
+def read_temperature() -> float:
   object_temp = 0
 
   for i in range(loops):
@@ -22,6 +22,7 @@ def getTemperature() -> float:
       if (measured_temp > object_temp):
         object_temp = measured_temp
     except OSError:
+      print("IRT OSError: IRT might be unplugged.")
       pass
     except KeyboardInterrupt:
       bus.close()

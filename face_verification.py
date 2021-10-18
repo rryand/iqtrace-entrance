@@ -11,12 +11,19 @@ import numpy
 #   cv2.imwrite("output.jpg", decoded)
 
 def verify_face(known_encoding, unknown_frame, tolerance=0.6):
+  print("Verifying...")
   try:
     known_encoding2 = numpy.array(known_encoding)
     unknown_encoding = face_recognition.face_encodings(unknown_frame)[0]
 
-    result = face_recognition.compare_faces([known_encoding2], unknown_encoding, tolerance)[0]
+    distance = face_recognition.face_distance([known_encoding2], unknown_encoding)[0]
+    print(f"Distance: {distance} | Tolerance: {tolerance}")
+
+    result = True if distance >= tolerance else False
+
+    #result = face_recognition.compare_faces([known_encoding2], unknown_encoding, tolerance)[0]
   except IndexError:
+    print("FaceVerification: Can't find face.")
     result = False
 
   return result
