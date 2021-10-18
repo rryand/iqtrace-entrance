@@ -15,38 +15,40 @@ def is_json(data):
   return True
 
 class CameraThread(threading.Thread):
-  def __init__(self, previewName, camID):
+  def __init__(self, preview_name, cam_id):
     threading.Thread.__init__(self)
-    self.previewName = previewName
-    self.camID = camID
+    self.preview_name = preview_name
+    self.cam_id = cam_id
     self.frame = None
     self.qr_data = None
 
   # TODO: Make base class for camera threads
   def terminate(self):
-    print("Terminating ", self.previewName)
+    print("Terminating " + self.preview_name)
     self._is_running = False
 
   def run(self):
-    print("Starting " + self.previewName)
+    print("Starting " + self.preview_name)
     self._is_running = True
-    self.run_camera(self.previewName, self.camID)
+    self.run_camera(self.preview_name, self.cam_id)
 
-  def run_camera(self, previewName, camID):
-    #cv2.namedWindow(previewName)
+  def run_camera(self, preview_name, camID):
     cam = cv2.VideoCapture(camID)
     if cam.isOpened():
       #rval, frame = cam.read()
-      print()
+      print(f"{preview_name} is open.")
     else:
       print("ALERT: Camera is not open!")
       self._is_running = False
       #rval = False
 
+    process_this_frame = True
     while self._is_running and not self.has_valid_qr_data():
       rval, frame = cam.read()
-      (frame, data) = qr.detectQrCode(frame)
-      self.qr_data = json.loads(data) if data is not None and is_json(data) else data
+      if process_this_frame:
+        (frame, data) = qr.detectQrCode(frame)
+        self.qr_data = json.loads(data) if data is not None and is_json(data) else data
+      process_this_frame = not process_this_frame
       self.frame = frame
     
     print("Stopping camera")

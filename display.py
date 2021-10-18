@@ -11,12 +11,11 @@ def get_qr_thread():
   return CameraThread("IQT QR Detector", 0)
   
 def get_screen_thread():
-  return ScreenThread("Screen")
+  return ScreenThread("Screen Display")
 
 def display(qr_frame, screen_frame):
   combined_frame = _build_frame(qr_frame, screen_frame)
   cv2.imshow("IQT Entrance", combined_frame)
-  #print("displaying...")
 
 def _build_frame(frame1, frame2):
   h1, w1, c1 = frame1.shape[:3]

@@ -42,6 +42,7 @@ def main() -> None:
 
     # PRESS Q TO QUIT
     if cv2.waitKey(25) & 0xFF == ord("q"):
+      print("Terminating program...")
       qr_thread.terminate()
       screen_thread.terminate()
       cv2.destroyAllWindows()
@@ -96,7 +97,5 @@ def main() -> None:
       user_data = None
       qr_thread = get_qr_thread()
       qr_thread.start()
-  
-  print("End main()")
 
 main()

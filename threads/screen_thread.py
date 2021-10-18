@@ -7,20 +7,20 @@ import numpy
 import threads.processors.face_recog as face_recog
 
 class ScreenThread(threading.Thread):
-  def __init__(self, previewName):
+  def __init__(self, preview_name):
     threading.Thread.__init__(self)
-    self.previewName = previewName
+    self.preview_name = preview_name
     self.frame = None
     self.face_frame = None
   
   def terminate(self):
-    print("Terminating ", self.previewName)
+    print("Terminating " + self.preview_name)
     self._is_running = False
 
   def run(self):
-    print("Starting " + self.previewName)
+    print("Starting " + self.preview_name)
     self._is_running = True
-    self.run_screen(self.previewName)
+    self.run_screen(self.preview_name)
 
   def run_screen(self, name):
     process_frame = True
